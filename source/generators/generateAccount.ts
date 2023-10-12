@@ -1,5 +1,5 @@
-import { mnemonicToMiniSecret } from '@polkadot/util-crypto'
-import * as Kilt from '@kiltprotocol/sdk-js'
+import { mnemonicToMiniSecret } from "@polkadot/util-crypto";
+import * as Kilt from "@kiltprotocol/sdk-js";
 
 /**
  * Generates a KiltKeyringPair from a mnemonic.
@@ -10,14 +10,14 @@ import * as Kilt from '@kiltprotocol/sdk-js'
  * @param mnemonic
  * @returns
  */
-export function generateAccount(mnemonic: string): Kilt.KiltKeyringPair {
+export function generateAccount(
+  mnemonic: string,
+  scheme: "ecdsa" | "sr25519" | "ed25519" = "sr25519"
+): Kilt.KiltKeyringPair {
   // Currently, the default the key type used by the Kilt-team is "sr25519"
   // transform to a U8 Array.
-  const mnemonicToU8A = mnemonicToMiniSecret(mnemonic)
-  const account = Kilt.Utils.Crypto.makeKeypairFromSeed(
-    mnemonicToU8A,
-    'sr25519'
-  )
+  const mnemonicToU8A = mnemonicToMiniSecret(mnemonic);
+  const account = Kilt.Utils.Crypto.makeKeypairFromSeed(mnemonicToU8A, scheme);
 
-  return account
+  return account;
 }

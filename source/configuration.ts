@@ -4,8 +4,10 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const DID = loadEnv("DID") as Kilt.DidUri;
-export const SECRET_BACKUP_PHRASE = loadEnv("SECRET_BACKUP_PHRASE");
+export const WSS_ADDRESS = process.env.WSS_ADDRESS;
+// export const DID = loadEnv("DID") as Kilt.DidUri;
+// export const SECRET_BACKUP_PHRASE = loadEnv("SECRET_BACKUP_PHRASE");
+export const FAUCET_SEED = loadEnv("FAUCET_SEED");
 
 function loadEnv(name: string) {
   const envValue = process.env[name];

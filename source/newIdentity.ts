@@ -8,6 +8,7 @@ const FUNDED_ACCOUNT_MNEMONIC =
   "resemble finger consider swear twenty obscure during exact palm model praise relief";
 
 makeNewIdentity(FUNDED_ACCOUNT_MNEMONIC);
+
 async function makeNewIdentity(payerMnemonic: string) {
   const api = await getApi();
   const chainName = (await api.rpc.system.chain()).toHuman();

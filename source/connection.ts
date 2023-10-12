@@ -1,7 +1,9 @@
 import * as Kilt from "@kiltprotocol/sdk-js";
+import { WSS_ADDRESS } from "./configuration";
 
 const spiritnet_socket = "wss://spiritnet.kilt.io";
 const peregrine_socket = "wss://peregrine.kilt.io";
+const wssAddress = WSS_ADDRESS;
 
 /**
  * Makes sure you only connect once to the API of the Blockchain. If you are connected, return it.
@@ -34,10 +36,17 @@ export async function getApi(webSocketLetter?: "p" | "s") {
     return api;
   }
 
-  let webSocketAddress: string = peregrine_socket;
+  // Try to assign from the .env file through WSS_ADDRESS
+
+  let webSocketAddress: string = wssAddress ?? peregrine_socket;
   // "wss" stands for WebSocket Secure
+
+  // if one of the letters is specified, overwrite the wss-address
   if (webSocketLetter === "s") {
     webSocketAddress = spiritnet_socket;
+  }
+  if (webSocketLetter === "p") {
+    webSocketAddress = peregrine_socket;
   }
 
   // If not, set up a new one (connect)

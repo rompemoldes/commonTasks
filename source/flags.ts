@@ -14,11 +14,23 @@ export default async function readFlags() {
       type: "string",
       alias: "#",
     },
+    mnemonic: {
+      description: "A mnemonic to use for this task.",
+      type: "string",
+      alias: "m",
+    },
+    derivation: {
+      description: "A derivation path to use for this task.",
+      type: "string",
+      alias: "d",
+    },
   }).argv;
 
   return {
     chain: narrowChainFlag(argv.chain as string),
     claimHash: argv.claimHash,
+    mnemonicTyped: argv.mnemonic,
+    derivationPath: argv.derivation,
   };
 }
 

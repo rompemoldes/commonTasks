@@ -3,11 +3,9 @@ import { generateAccount } from "./generators/generateAccount";
 import { mnemonicGenerate } from "@polkadot/util-crypto";
 import { generateFullDid } from "./generators/generateFullDid";
 import * as Kilt from "@kiltprotocol/sdk-js";
+import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from "./configuration";
 
-const FUNDED_ACCOUNT_MNEMONIC =
-  "resemble finger consider swear twenty obscure during exact palm model praise relief";
-
-makeNewIdentity(FUNDED_ACCOUNT_MNEMONIC);
+makeNewIdentity(ACCOUNT_MNEMONIC);
 
 async function makeNewIdentity(payerMnemonic: string) {
   const api = await getApi();

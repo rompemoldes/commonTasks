@@ -3,7 +3,7 @@ import { generateAccount } from "./generators/generateAccount";
 import { mnemonicGenerate } from "@polkadot/util-crypto";
 import { generateFullDid } from "./generators/generateFullDid";
 import * as Kilt from "@kiltprotocol/sdk-js";
-import { FAUCET_SEED } from "./configuration";
+import { ACCOUNT_MNEMONIC } from "./configuration";
 import readFlags from "./flags";
 
 makeNewAccount();

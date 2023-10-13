@@ -7,7 +7,8 @@ dotenv.config();
 export const WSS_ADDRESS = process.env.WSS_ADDRESS;
 // export const DID = loadEnv("DID") as Kilt.DidUri;
 // export const SECRET_BACKUP_PHRASE = loadEnv("SECRET_BACKUP_PHRASE");
-export const FAUCET_SEED = loadEnv("FAUCET_SEED");
+export const ACCOUNT_MNEMONIC = loadEnv("ACCOUNT_MNEMONIC");
+export const DID_MNEMONIC = loadEnv("DID_MNEMONIC");
 
 function loadEnv(name: string) {
   const envValue = process.env[name];

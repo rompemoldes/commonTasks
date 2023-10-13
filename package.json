@@ -14,5 +14,5 @@
     "yargs": "^17.7.2"
   },
   "scripts": {"newAccount": "ts-node source/newAccount.ts",
-  "newIdentity": "source/newIdentity.ts"}
+  "newIdentity": "ts-node source/newIdentity.ts"}
 }

@@ -6,7 +6,8 @@ import { generateKeyPairs } from "./generateKeyPairs";
 
 export async function generateFullDid(
   submitterAccount: Kilt.KiltKeyringPair,
-  didMnemonic: string
+  didMnemonic: string,
+  scheme: "ecdsa" | "sr25519" | "ed25519" = "ed25519"
 ): Promise<Kilt.DidDocument> {
   await getApi();
   const {
@@ -14,7 +15,7 @@ export async function generateFullDid(
     keyAgreement,
     assertionMethod,
     capabilityDelegation,
-  } = generateKeyPairs(didMnemonic);
+  } = generateKeyPairs(didMnemonic, scheme);
 
   // Before submitting the transaction, it is worth it to assure that the DID does not already exist.
   // If the DID already exist, the transaction will fail, but it will still costs the fee. Better to avoid this.

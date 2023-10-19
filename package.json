@@ -13,6 +13,8 @@
     "typescript": "^5.2.2",
     "yargs": "^17.7.2"
   },
-  "scripts": {"newAccount": "ts-node source/newAccount.ts",
-  "newIdentity": "ts-node source/newIdentity.ts"}
+  "scripts": {
+    "newAccount": "ts-node source/newAccount.ts",
+    "newIdentity": "ts-node source/newIdentity.ts"
+  }
 }

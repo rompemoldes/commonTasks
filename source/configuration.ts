@@ -38,11 +38,7 @@ export function setupSubscanApi(chain?: "p" | "s") {
   const socialKYCSpiritnetDidUri: Kilt.DidUri =
     "did:kilt:4pnfkRn5UurBJTW92d9TaVLR2CqJdY4z5HPjrEbpGyBykare";
 
-  // for chain = "p" or undefined
-  let network = peregrineNetwork;
-  if (chain === "s") {
-    network = spiritnetNetwork;
-  }
+  let network = chain === "s" ? spiritnetNetwork : peregrineNetwork;
 
   const apiUrl = `https://${network}.api.subscan.io`;
 

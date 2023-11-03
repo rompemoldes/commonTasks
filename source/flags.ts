@@ -24,6 +24,12 @@ export default async function readFlags() {
       type: "string",
       alias: "d",
     },
+    verbose: {
+      description: "Print more logs than strictly necessary.",
+      type: "boolean",
+      alias: "v",
+      default: false,
+    },
   }).argv;
 
   return {
@@ -31,6 +37,7 @@ export default async function readFlags() {
     claimHash: argv.claimHash,
     mnemonicTyped: argv.mnemonic,
     derivationPath: argv.derivation,
+    verbose: argv.verbose,
   };
 }
 

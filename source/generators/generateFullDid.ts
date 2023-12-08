@@ -1,13 +1,13 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
+import * as Kilt from '@kiltprotocol/sdk-js';
 
-import { getApi } from "../connection";
+import { getApi } from '../connection';
 
-import { generateKeyPairs } from "./generateKeyPairs";
+import { generateKeyPairs } from './generateKeyPairs';
 
 export async function generateFullDid(
   submitterAccount: Kilt.KiltKeyringPair,
   didMnemonic: string,
-  scheme: "ecdsa" | "sr25519" | "ed25519" = "ed25519"
+  scheme: 'ecdsa' | 'sr25519' | 'ed25519' = 'ed25519',
 ): Promise<Kilt.DidDocument> {
   await getApi();
   const {
@@ -31,12 +31,12 @@ export async function generateFullDid(
 
     if (deactivated) {
       throw new Error(
-        "This DID was deleted/deactivated and cannot be created again."
+        'This DID was deleted/deactivated and cannot be created again.',
       );
     }
     if (!oldDidDocument) {
       throw new Error(
-        "DID resolved, but document undefined. This should be impossible."
+        'DID resolved, but document undefined. This should be impossible.',
       );
     }
 
@@ -56,7 +56,7 @@ export async function generateFullDid(
     async ({ data }) => ({
       signature: authentication.sign(data),
       keyType: authentication.type,
-    })
+    }),
   );
 
   // This is what register the DID on the chain. This costs, regardless of the result.
@@ -65,12 +65,12 @@ export async function generateFullDid(
   const didUri = Kilt.Did.getFullDidUriFromKey(authentication);
   const resolved = await Kilt.Did.resolve(didUri);
   if (!resolved) {
-    throw new Error("Full DID could not be fetch from chain. A.K.A.: resolved");
+    throw new Error('Full DID could not be fetch from chain. A.K.A.: resolved');
   }
   const { document: didDocument } = resolved;
 
   if (!didDocument) {
-    throw new Error("Full DID was not successfully fetched.");
+    throw new Error('Full DID was not successfully fetched.');
   }
 
   Kilt.disconnect();

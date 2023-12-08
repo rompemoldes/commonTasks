@@ -1,8 +1,9 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
-import { WSS_ADDRESS } from "./configuration";
+import * as Kilt from '@kiltprotocol/sdk-js';
 
-const spiritnet_socket = "wss://spiritnet.kilt.io";
-const peregrine_socket = "wss://peregrine.kilt.io";
+import { WSS_ADDRESS } from './configuration';
+
+const spiritnet_socket = 'wss://spiritnet.kilt.io';
+const peregrine_socket = 'wss://peregrine.kilt.io';
 const wssAddress = WSS_ADDRESS;
 
 /**
@@ -15,14 +16,14 @@ const wssAddress = WSS_ADDRESS;
  *
  * @returns active ApiPromise
  */
-export async function getApi(webSocketLetter?: "p" | "s") {
+export async function getApi(webSocketLetter?: 'p' | 's') {
   const wishedChain =
-    webSocketLetter === "s" ? "KILT Spiritnet" : "KILT Peregrine";
+    webSocketLetter === 's' ? 'KILT Spiritnet' : 'KILT Peregrine';
 
   // If the API is already set up, return it
-  if (Kilt.ConfigService.isSet("api")) {
+  if (Kilt.ConfigService.isSet('api')) {
     // console.log("using api set previously");
-    const api = Kilt.ConfigService.get("api");
+    const api = Kilt.ConfigService.get('api');
     // If you specified the chain you want to connect, check that matches the currently connected one
     if (webSocketLetter) {
       const nameOfChainCurrentlyConnected = (
@@ -30,7 +31,7 @@ export async function getApi(webSocketLetter?: "p" | "s") {
       ).toHuman();
       if (nameOfChainCurrentlyConnected !== wishedChain) {
         throw new Error(
-          "Disconnect from one chain before connecting to the other one!"
+          'Disconnect from one chain before connecting to the other one!',
         );
       }
     }
@@ -43,10 +44,10 @@ export async function getApi(webSocketLetter?: "p" | "s") {
   // "wss" stands for WebSocket Secure
 
   // if one of the letters is specified, overwrite the wss-address
-  if (webSocketLetter === "s") {
+  if (webSocketLetter === 's') {
     webSocketAddress = spiritnet_socket;
   }
-  if (webSocketLetter === "p") {
+  if (webSocketLetter === 'p') {
     webSocketAddress = peregrine_socket;
   }
   // console.log("webSocketAddress: ", webSocketAddress);

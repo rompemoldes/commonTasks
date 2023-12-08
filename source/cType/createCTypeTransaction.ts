@@ -1,16 +1,17 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
-import { createRandomCTypeSchema } from "./createCTypeSchema";
+import * as Kilt from '@kiltprotocol/sdk-js';
+
+import { createRandomCTypeSchema } from './createCTypeSchema';
 
 export async function createCTypeTransaction(
-  cTypeSchema: Kilt.ICType | "Random" = driversLicenseCTypeSchema,
+  cTypeSchema: Kilt.ICType | 'Random' = driversLicenseCTypeSchema,
   creator: Kilt.DidUri,
   submitterAccount: `4${string}`,
   signCallback: Kilt.SignExtrinsicCallback,
-  txCounter?: Kilt.BN
+  txCounter?: Kilt.BN,
 ): Promise<Kilt.SubmittableExtrinsic> {
-  const api = Kilt.ConfigService.get("api");
+  const api = Kilt.ConfigService.get('api');
 
-  if (cTypeSchema === "Random") {
+  if (cTypeSchema === 'Random') {
     cTypeSchema = createRandomCTypeSchema();
   }
 
@@ -23,7 +24,7 @@ export async function createCTypeTransaction(
     cTypeCreationTx,
     signCallback,
     submitterAccount,
-    { txCounter }
+    { txCounter },
   );
 
   return authorizedCTypeCreationTx;
@@ -34,13 +35,13 @@ const driversLicenseCTypeSchema = Kilt.CType.fromProperties(
   `Drivers License by foobar`,
   {
     name: {
-      type: "string",
+      type: 'string',
     },
     age: {
-      type: "integer",
+      type: 'integer',
     },
     id: {
-      type: "string",
+      type: 'string',
     },
-  }
+  },
 );

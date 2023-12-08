@@ -1,24 +1,25 @@
-import { getApi } from "./connection";
-import { generateAccount } from "./generators/generateAccount";
-import { generateFullDid } from "./generators/generateFullDid";
-import * as Kilt from "@kiltprotocol/sdk-js";
-import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from "./configuration";
-import { makeSignExtrinsicCallBackShortCut } from "./callBacks/makeSignExtrinsicCallBackShortCut";
-import { generateKeyPairs } from "./generators/generateKeyPairs";
-import { makeSignCallBackShortCut } from "./callBacks/makeSignCallBackShortCut";
+import * as Kilt from '@kiltprotocol/sdk-js';
+
+import { getApi } from './connection';
+import { generateAccount } from './generators/generateAccount';
+import { generateFullDid } from './generators/generateFullDid';
+import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from './configuration';
+import { makeSignExtrinsicCallBackShortCut } from './callBacks/makeSignExtrinsicCallBackShortCut';
+import { generateKeyPairs } from './generators/generateKeyPairs';
+import { makeSignCallBackShortCut } from './callBacks/makeSignCallBackShortCut';
 
 const TRANSACTION_TIMEOUT = 5 * 60 * 1000;
 
 async function timeout(delay: number, error: Error) {
   return new Promise((resolve, reject) =>
-    setTimeout(() => reject(error), delay)
+    setTimeout(() => reject(error), delay),
   );
 }
 
 async function runTransactionWithTimeout<Result>(transaction: Promise<Result>) {
   await Promise.race([
     transaction,
-    timeout(TRANSACTION_TIMEOUT, new Error("Transaction timed out")),
+    timeout(TRANSACTION_TIMEOUT, new Error('Transaction timed out')),
   ]);
 }
 
@@ -43,8 +44,8 @@ export interface SubmitOptions {
  */
 export async function singAndSubmitTxsBatch(
   extrinsics: Kilt.SubmittableExtrinsic[],
-  batchType: "absolute" | "gradual" | "independent",
-  options: SubmitOptions = {}
+  batchType: 'absolute' | 'gradual' | 'independent',
+  options: SubmitOptions = {},
 ) {
   // extract options o use default:
   const {
@@ -64,34 +65,34 @@ export async function singAndSubmitTxsBatch(
   }${fullDid!.assertionMethod![0].id}`;
 
   const batchFunction =
-    batchType === "absolute"
+    batchType === 'absolute'
       ? api.tx.utility.batch
-      : batchType === "gradual"
-      ? api.tx.utility.batchAll
-      : api.tx.utility.forceBatch;
+      : batchType === 'gradual'
+        ? api.tx.utility.batchAll
+        : api.tx.utility.forceBatch;
 
   if (verbose) {
-    console.log("\n", "Payer account address: ", payer.address);
-    console.log("Did Uri ", fullDid.uri);
-    console.log("DID assertion Key Uri: ", didAssertionKeyUri, "\n");
+    console.log('\n', 'Payer account address: ', payer.address);
+    console.log('Did Uri ', fullDid.uri);
+    console.log('DID assertion Key Uri: ', didAssertionKeyUri, '\n');
   }
 
-  verbose && console.log("Authorizing transaction");
+  verbose && console.log('Authorizing transaction');
   const authorized = await Kilt.Did.authorizeBatch({
     batchFunction,
     did: fullDid.uri,
     extrinsics,
     sign: makeSignCallBackShortCut(
       didAssertionKeyUri,
-      didKeyPairs.assertionMethod
+      didKeyPairs.assertionMethod,
     ),
     // sign: makeSignExtrinsicCallBackShortCut(didKeyPairs.assertionMethod), // both work
     submitter: payer.address,
   });
 
-  verbose && console.log("Submitting transaction");
+  verbose && console.log('Submitting transaction');
   await runTransactionWithTimeout(
-    Kilt.Blockchain.signAndSubmitTx(authorized, payer)
+    Kilt.Blockchain.signAndSubmitTx(authorized, payer),
   );
-  verbose && console.log("Transaction submitted");
+  verbose && console.log('Transaction submitted');
 }

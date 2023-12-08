@@ -1,10 +1,11 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
-import { getApi } from "./connection";
+import * as Kilt from '@kiltprotocol/sdk-js';
+
+import { getApi } from './connection';
 
 export async function selfAttestCredential(
   credential: Kilt.ICredential,
   assertionMethodKey: Kilt.KiltKeyringPair,
-  submitterAccount: Kilt.KiltKeyringPair
+  submitterAccount: Kilt.KiltKeyringPair,
 ) {
   const api = await getApi();
 
@@ -14,7 +15,7 @@ export async function selfAttestCredential(
 
   const { cTypeHash, claimHash } = Kilt.Attestation.fromCredentialAndDid(
     credential,
-    credential.claim.owner
+    credential.claim.owner,
   );
 
   // Step 2:  creating the attest transaction
@@ -38,21 +39,21 @@ export async function selfAttestCredential(
       credential.claim.owner,
       attestationTx,
       signCallback,
-      submitterAccount.address
+      submitterAccount.address,
     );
   } catch (error) {
-    throw new Error("Could not sing the self-attestation of the credential");
+    throw new Error('Could not sing the self-attestation of the credential');
   }
 
   // Since DIDs can not hold any balance, we pay for the transaction using our blockchain account
   const result = await Kilt.Blockchain.signAndSubmitTx(
     submitTx,
-    submitterAccount
+    submitterAccount,
   );
 
   if (result.isError) {
-    throw new Error("Attestation failed");
+    throw new Error('Attestation failed');
   } else {
-    console.log("Attestation successful");
+    console.log('Attestation successful');
   }
 }

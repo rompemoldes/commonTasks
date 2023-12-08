@@ -1,10 +1,10 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
+import * as Kilt from '@kiltprotocol/sdk-js';
 
 /** Returns a "Kilt.SignExtrinsicCallback" function that directly returns what it's need.
  * The internal parameters of the signCallBack are just ignored, (except the "data").
  */
 export function makeSignExtrinsicCallBackShortCut(
-  didSigningKey: Kilt.KiltKeyringPair
+  didSigningKey: Kilt.KiltKeyringPair,
 ) {
   // The SignExtrinsicCallback is a more specialized SignCallback since it doesn't
   // need to return the keyUri.

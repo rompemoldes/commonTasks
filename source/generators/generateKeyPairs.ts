@@ -6,24 +6,24 @@ import {
   keyExtractPath,
   keyFromPath,
   blake2AsU8a,
-} from "@polkadot/util-crypto";
-import * as Kilt from "@kiltprotocol/sdk-js";
+} from '@polkadot/util-crypto';
+import * as Kilt from '@kiltprotocol/sdk-js';
 
 function generateSR25519KeyAgreement(mnemonic: string) {
   const secretKeyPair = sr25519PairFromSeed(mnemonicToMiniSecret(mnemonic));
-  const { path } = keyExtractPath("//did//keyAgreement//0");
-  const { secretKey } = keyFromPath(secretKeyPair, path, "sr25519");
+  const { path } = keyExtractPath('//did//keyAgreement//0');
+  const { secretKey } = keyFromPath(secretKeyPair, path, 'sr25519');
   return Kilt.Utils.Crypto.makeEncryptionKeypairFromSeed(
-    blake2AsU8a(secretKey)
+    blake2AsU8a(secretKey),
   );
 }
 
 function generateED25519KeyAgreement(mnemonic: string) {
   const secretKeyPair = ed25519PairFromSeed(mnemonicToMiniSecret(mnemonic));
-  const { path } = keyExtractPath("//did//keyAgreement//0");
-  const { secretKey } = keyFromPath(secretKeyPair, path, "ed25519");
+  const { path } = keyExtractPath('//did//keyAgreement//0');
+  const { secretKey } = keyFromPath(secretKeyPair, path, 'ed25519');
   return Kilt.Utils.Crypto.makeEncryptionKeypairFromSeed(
-    blake2AsU8a(secretKey)
+    blake2AsU8a(secretKey),
   );
 }
 
@@ -32,20 +32,20 @@ function generateED25519KeyAgreement(mnemonic: string) {
  */
 function generateECDSAKeyAgreement(mnemonic: string) {
   const secretKeyPair = secp256k1PairFromSeed(mnemonicToMiniSecret(mnemonic));
-  const { path } = keyExtractPath("//did//keyAgreement//0");
-  const { secretKey } = keyFromPath(secretKeyPair, path, "ecdsa");
+  const { path } = keyExtractPath('//did//keyAgreement//0');
+  const { secretKey } = keyFromPath(secretKeyPair, path, 'ecdsa');
   return Kilt.Utils.Crypto.makeEncryptionKeypairFromSeed(
-    blake2AsU8a(secretKey)
+    blake2AsU8a(secretKey),
   );
 }
 export function generateKeyPairs(
   mnemonic: string,
-  scheme: "ecdsa" | "sr25519" | "ed25519" = "ed25519"
+  scheme: 'ecdsa' | 'sr25519' | 'ed25519' = 'ed25519',
 ) {
   // Currently, the default the key type used by the Kilt-team is "ed25519". Better to use it for compatibility.
   const account = Kilt.Utils.Crypto.makeKeypairFromSeed(
     mnemonicToMiniSecret(mnemonic),
-    scheme
+    scheme,
   );
 
   // You can derive the keys however you want to and it will still work.
@@ -74,15 +74,15 @@ export function generateKeyPairs(
   let keyAgreement: Kilt.KiltEncryptionKeypair;
 
   switch (scheme) {
-    case "sr25519":
+    case 'sr25519':
       keyAgreement = generateSR25519KeyAgreement(mnemonic);
       break;
 
-    case "ed25519":
+    case 'ed25519':
       keyAgreement = generateED25519KeyAgreement(mnemonic);
       break;
 
-    case "ecdsa":
+    case 'ecdsa':
       keyAgreement = generateECDSAKeyAgreement(mnemonic);
       break;
   }

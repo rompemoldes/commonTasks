@@ -1,11 +1,11 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
+import * as Kilt from '@kiltprotocol/sdk-js';
 
 /** Returns a "Kilt.SignCallback" function that directly returns what it's need.
  * The internal parameters of the signCallBack are just ignored, (except the "data").
  */
 export function makeSignCallBackShortCut(
   keyUri: Kilt.DidResourceUri,
-  didSigningKey: Kilt.KiltKeyringPair
+  didSigningKey: Kilt.KiltKeyringPair,
 ): Kilt.SignCallback {
   const signCallback: Kilt.SignCallback = async ({
     data,

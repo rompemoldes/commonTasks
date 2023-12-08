@@ -1,15 +1,15 @@
-import * as Kilt from "@kiltprotocol/sdk-js";
+import * as Kilt from '@kiltprotocol/sdk-js';
 
-import { getApi } from "./connection";
-import { singAndSubmitTxsBatch } from "./batchTransaction";
+import { getApi } from './connection';
+import { singAndSubmitTxsBatch } from './batchTransaction';
 
-import readFlags from "./flags";
-import { createRandomCTypeSchema } from "./cType/createCTypeSchema";
+import readFlags from './flags';
+import { createRandomCTypeSchema } from './cType/createCTypeSchema';
 
 tryThis().then(() => process.exit());
 async function tryThis() {
   const flags = await readFlags();
-  flags.verbose && console.log("Flags: ", flags);
+  flags.verbose && console.log('Flags: ', flags);
   const api = await getApi(flags.chain);
   const chainName = (await api.rpc.system.chain()).toHuman();
 
@@ -28,7 +28,7 @@ async function tryThis() {
     verbose: flags.verbose,
   });
 
-  console.log("working on this blockchain: ", chainName);
+  console.log('working on this blockchain: ', chainName);
 
   await api.disconnect();
 }

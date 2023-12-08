@@ -33,18 +33,25 @@ export default async function readFlags() {
     bulkSize: {
       description: "Number of transactions to be triggered",
       type: "number",
-      alias: "b",
+      alias: "n",
       default: 3,
+    },
+    batchType: {
+      description: "Type of utility call to wrap the extrinsics on.",
+      type: "string",
+      alias: "b",
+      default: "independent",
     },
   }).argv;
 
   return {
-    chain: narrowChainFlag(argv.chain as string),
+    chain: narrowChainFlag(argv.chain),
     claimHash: argv.claimHash,
     mnemonicTyped: argv.mnemonic,
     derivationPath: argv.derivation,
     verbose: argv.verbose,
     bulkSize: argv.bulkSize,
+    batchType: narrowBatchType(argv.batchType),
   };
 }
 
@@ -66,5 +73,36 @@ function narrowChainFlag(value: string): "s" | "p" {
   } else {
     // default
     return "p";
+  }
+}
+
+function narrowBatchType(
+  value: string
+): "absolute" | "gradual" | "independent" {
+  const absoluteAliases = [
+    "batch",
+    "absolute",
+    "allOrNothing",
+    "binary",
+    "killjoy",
+    "partyPooper",
+  ];
+  const gradualAliases = [
+    "batchAll",
+    "gradual",
+    "stepwise",
+    "hierarchical",
+    "progressive",
+    "untilFailure",
+  ];
+
+  if (absoluteAliases.includes(value)) {
+    return "absolute";
+  }
+  if (gradualAliases.includes(value)) {
+    return "gradual";
+  } else {
+    // default
+    return "independent";
   }
 }

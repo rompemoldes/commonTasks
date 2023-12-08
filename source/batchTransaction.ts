@@ -28,8 +28,22 @@ export interface SubmitOptions {
   verbose?: boolean;
 }
 
+/**
+ *
+ * @param extrinsics unsigned Extrinsics
+ * @param batchType
+ * * "absolute" => utility.batch
+ * * "gradual" => utility.batchAll
+ * * "independent" => utility.forceBatch
+ * @param options (optional)
+ * Defaults:
+ * * payerMnemonic = env.ACCOUNT_MNEMONIC
+ * * didMnemonic = env.DID_MNEMONIC
+ * * verbose = false
+ */
 export async function singAndSubmitTxsBatch(
   extrinsics: Kilt.SubmittableExtrinsic[],
+  batchType: "absolute" | "gradual" | "independent",
   options: SubmitOptions = {}
 ) {
   // extract options o use default:
@@ -49,6 +63,13 @@ export async function singAndSubmitTxsBatch(
     didKeyPairs.assertionMethod.address
   }${fullDid!.assertionMethod![0].id}`;
 
+  const batchFunction =
+    batchType === "absolute"
+      ? api.tx.utility.batch
+      : batchType === "gradual"
+      ? api.tx.utility.batchAll
+      : api.tx.utility.forceBatch;
+
   if (verbose) {
     console.log("\n", "Payer account address: ", payer.address);
     console.log("Did Uri ", fullDid.uri);
@@ -57,7 +78,7 @@ export async function singAndSubmitTxsBatch(
 
   verbose && console.log("Authorizing transaction");
   const authorized = await Kilt.Did.authorizeBatch({
-    batchFunction: api.tx.utility.forceBatch,
+    batchFunction,
     did: fullDid.uri,
     extrinsics,
     sign: makeSignCallBackShortCut(

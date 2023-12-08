@@ -9,7 +9,7 @@ import { createRandomCTypeSchema } from "./cType/createCTypeSchema";
 tryThis().then(() => process.exit());
 async function tryThis() {
   const flags = await readFlags();
-  console.log("Flags: ", flags);
+  flags.verbose && console.log("Flags: ", flags);
   const api = await getApi(flags.chain);
   const chainName = (await api.rpc.system.chain()).toHuman();
 
@@ -24,7 +24,9 @@ async function tryThis() {
 
     extrinsicsForBatch.push(cTypeCreationTx);
   }
-  await singAndSubmitTxsBatch(extrinsicsForBatch, { verbose: true });
+  await singAndSubmitTxsBatch(extrinsicsForBatch, flags.batchType, {
+    verbose: flags.verbose,
+  });
 
   console.log("working on this blockchain: ", chainName);
 

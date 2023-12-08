@@ -2,8 +2,9 @@ import * as Kilt from "@kiltprotocol/sdk-js";
 
 import { getApi } from "./connection";
 import { singAndSubmitTxsBatch } from "./batchTransaction";
-import { createRandomCTypeSchema } from "./createCTypeTransaction";
+
 import readFlags from "./flags";
+import { createRandomCTypeSchema } from "./cType/createCTypeSchema";
 
 tryThis().then(() => process.exit());
 async function tryThis() {
@@ -16,7 +17,7 @@ async function tryThis() {
   const extrinsicsForBatch: Kilt.SubmittableExtrinsic[] = [];
 
   for (let index = 0; index < flags.bulkSize; index++) {
-    const cTypeSchema = createRandomCTypeSchema();
+    const cTypeSchema = createRandomCTypeSchema(index);
 
     const encodedCType = Kilt.CType.toChain(cTypeSchema);
     const cTypeCreationTx = api.tx.ctype.add(encodedCType);

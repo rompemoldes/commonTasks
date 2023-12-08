@@ -21,6 +21,7 @@ export async function getApi(webSocketLetter?: "p" | "s") {
 
   // If the API is already set up, return it
   if (Kilt.ConfigService.isSet("api")) {
+    // console.log("using api set previously");
     const api = Kilt.ConfigService.get("api");
     // If you specified the chain you want to connect, check that matches the currently connected one
     if (webSocketLetter) {
@@ -48,10 +49,10 @@ export async function getApi(webSocketLetter?: "p" | "s") {
   if (webSocketLetter === "p") {
     webSocketAddress = peregrine_socket;
   }
-
+  // console.log("webSocketAddress: ", webSocketAddress);
   // If not, set up a new one (connect)
-  await Kilt.connect(webSocketAddress);
+  const api = await Kilt.connect(webSocketAddress);
   // internally Kilt.connect() calls cryptoWaitReady()
-
-  return Kilt.ConfigService.get("api");
+  // console.log("right after connecting to api");
+  return api;
 }

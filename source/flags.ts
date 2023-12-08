@@ -30,6 +30,12 @@ export default async function readFlags() {
       alias: "v",
       default: false,
     },
+    bulkSize: {
+      description: "Number of transactions to be triggered",
+      type: "number",
+      alias: "b",
+      default: 3,
+    },
   }).argv;
 
   return {
@@ -38,6 +44,7 @@ export default async function readFlags() {
     mnemonicTyped: argv.mnemonic,
     derivationPath: argv.derivation,
     verbose: argv.verbose,
+    bulkSize: argv.bulkSize,
   };
 }
 

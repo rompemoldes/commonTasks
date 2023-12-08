@@ -11,10 +11,7 @@ import {
   createCTypeTransaction,
   createRandomCTypeSchema,
 } from "./createCTypeTransaction";
-import { makeSignCallBackShortCut } from "./callBacks/makeSignCallBackShortCut";
 import readFlags from "./flags";
-import type { Extrinsic } from "@polkadot/types/interfaces";
-import { makeSignExtrinsicCallBackShortCut } from "./callBacks/makeSignExtrinsicCallBackShortCut";
 
 tryThis().then(() => process.exit());
 async function tryThis() {
@@ -22,7 +19,6 @@ async function tryThis() {
   console.log("Flags: ", flags);
   const api = await getApi(flags.chain);
   const chainName = (await api.rpc.system.chain()).toHuman();
-  console.log("working on this blockchain: ", chainName);
 
   const payer = generateAccount(ACCOUNT_MNEMONIC);
   const fullDid = await generateFullDid(payer, DID_MNEMONIC);
@@ -35,12 +31,12 @@ async function tryThis() {
   console.log("Print what im working with.");
   console.log("Payer account address: ", payer.address);
   console.log("Did Uri ", fullDid.uri);
-  console.log("did assertion Key Uri: ", didAssertionKeyUri);
+  console.log("did assertion Key Uri: ", didAssertionKeyUri, "\n");
 
   // generate transactions that create cTypes
   const extrinsicsForBatch: Kilt.SubmittableExtrinsic[] = [];
 
-  for (let index = 0; index < 3; index++) {
+  for (let index = 0; index < flags.bulkSize; index++) {
     const cTypeSchema = createRandomCTypeSchema();
 
     const encodedCType = Kilt.CType.toChain(cTypeSchema);
@@ -49,6 +45,8 @@ async function tryThis() {
     extrinsicsForBatch.push(cTypeCreationTx);
   }
   await singAndSubmitTxsBatch(extrinsicsForBatch);
+
+  console.log("working on this blockchain: ", chainName);
 
   await api.disconnect();
 }

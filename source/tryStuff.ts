@@ -37,15 +37,17 @@ async function tryThis() {
   console.log("Did Uri ", fullDid.uri);
   console.log("did assertion Key Uri: ", didAssertionKeyUri);
 
+  // generate transactions that create cTypes
   const extrinsicsForBatch: Kilt.SubmittableExtrinsic[] = [];
 
-  const cTypeSchema = createRandomCTypeSchema();
+  for (let index = 0; index < 3; index++) {
+    const cTypeSchema = createRandomCTypeSchema();
 
-  const encodedCType = Kilt.CType.toChain(cTypeSchema);
-  const cTypeCreationTx = api.tx.ctype.add(encodedCType);
+    const encodedCType = Kilt.CType.toChain(cTypeSchema);
+    const cTypeCreationTx = api.tx.ctype.add(encodedCType);
 
-  extrinsicsForBatch.push(cTypeCreationTx);
-
+    extrinsicsForBatch.push(cTypeCreationTx);
+  }
   await singAndSubmitTxsBatch(extrinsicsForBatch);
 
   await api.disconnect();

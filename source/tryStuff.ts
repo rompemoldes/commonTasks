@@ -1,16 +1,8 @@
 import * as Kilt from "@kiltprotocol/sdk-js";
 
-import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from "./configuration";
 import { getApi } from "./connection";
-import { generateAccount } from "./generators/generateAccount";
-import { generateFullDid } from "./generators/generateFullDid";
-import { generateKeyPairs } from "./generators/generateKeyPairs";
-import { u8aToHex } from "@polkadot/util";
 import { singAndSubmitTxsBatch } from "./batchTransaction";
-import {
-  createCTypeTransaction,
-  createRandomCTypeSchema,
-} from "./createCTypeTransaction";
+import { createRandomCTypeSchema } from "./createCTypeTransaction";
 import readFlags from "./flags";
 
 tryThis().then(() => process.exit());
@@ -19,19 +11,6 @@ async function tryThis() {
   console.log("Flags: ", flags);
   const api = await getApi(flags.chain);
   const chainName = (await api.rpc.system.chain()).toHuman();
-
-  const payer = generateAccount(ACCOUNT_MNEMONIC);
-  const fullDid = await generateFullDid(payer, DID_MNEMONIC);
-  const didKeyPairs = generateKeyPairs(DID_MNEMONIC);
-
-  const didAssertionKeyUri: Kilt.DidResourceUri = `did:kilt:${
-    didKeyPairs.assertionMethod.address
-  }${fullDid!.assertionMethod![0].id}`;
-
-  console.log("Print what im working with.");
-  console.log("Payer account address: ", payer.address);
-  console.log("Did Uri ", fullDid.uri);
-  console.log("did assertion Key Uri: ", didAssertionKeyUri, "\n");
 
   // generate transactions that create cTypes
   const extrinsicsForBatch: Kilt.SubmittableExtrinsic[] = [];
@@ -44,7 +23,7 @@ async function tryThis() {
 
     extrinsicsForBatch.push(cTypeCreationTx);
   }
-  await singAndSubmitTxsBatch(extrinsicsForBatch);
+  await singAndSubmitTxsBatch(extrinsicsForBatch, { verbose: true });
 
   console.log("working on this blockchain: ", chainName);
 

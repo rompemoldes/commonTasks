@@ -1,12 +1,10 @@
 import { getApi } from "./connection";
 import { generateAccount } from "./generators/generateAccount";
-import { mnemonicGenerate } from "@polkadot/util-crypto";
 import { generateFullDid } from "./generators/generateFullDid";
 import * as Kilt from "@kiltprotocol/sdk-js";
 import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from "./configuration";
 import { makeSignExtrinsicCallBackShortCut } from "./callBacks/makeSignExtrinsicCallBackShortCut";
 import { generateKeyPairs } from "./generators/generateKeyPairs";
-import type { Extrinsic } from "@polkadot/types/interfaces";
 import { makeSignCallBackShortCut } from "./callBacks/makeSignCallBackShortCut";
 
 const TRANSACTION_TIMEOUT = 5 * 60 * 1000;
@@ -24,39 +22,55 @@ async function runTransactionWithTimeout<Result>(transaction: Promise<Result>) {
   ]);
 }
 
+export interface SubmitOptions {
+  payerMnemonic?: string;
+  didMnemonic?: string;
+  verbose?: boolean;
+}
+
 export async function singAndSubmitTxsBatch(
   extrinsics: Kilt.SubmittableExtrinsic[],
-  payerMnemonic: string = ACCOUNT_MNEMONIC,
-  didMnemonic: string = DID_MNEMONIC
+  options: SubmitOptions = {}
 ) {
+  // extract options o use default:
+  const {
+    payerMnemonic = ACCOUNT_MNEMONIC,
+    didMnemonic = DID_MNEMONIC,
+    verbose = false,
+  } = options;
+
   const api = await getApi();
 
   const payer = generateAccount(payerMnemonic);
-
   const fullDid = await generateFullDid(payer, didMnemonic);
-
   const didKeyPairs = generateKeyPairs(didMnemonic);
 
-  const didAssertionKey: Kilt.DidResourceUri = `did:kilt:${
+  const didAssertionKeyUri: Kilt.DidResourceUri = `did:kilt:${
     didKeyPairs.assertionMethod.address
   }${fullDid!.assertionMethod![0].id}`;
 
-  console.log("Authorizing transaction");
+  if (verbose) {
+    console.log("\n", "Payer account address: ", payer.address);
+    console.log("Did Uri ", fullDid.uri);
+    console.log("DID assertion Key Uri: ", didAssertionKeyUri, "\n");
+  }
+
+  verbose && console.log("Authorizing transaction");
   const authorized = await Kilt.Did.authorizeBatch({
     batchFunction: api.tx.utility.forceBatch,
     did: fullDid.uri,
     extrinsics,
     sign: makeSignCallBackShortCut(
-      didAssertionKey,
+      didAssertionKeyUri,
       didKeyPairs.assertionMethod
     ),
     // sign: makeSignExtrinsicCallBackShortCut(didKeyPairs.assertionMethod), // both work
     submitter: payer.address,
   });
 
-  console.log("Submitting transaction");
+  verbose && console.log("Submitting transaction");
   await runTransactionWithTimeout(
     Kilt.Blockchain.signAndSubmitTx(authorized, payer)
   );
-  console.log("Transaction submitted");
+  verbose && console.log("Transaction submitted");
 }

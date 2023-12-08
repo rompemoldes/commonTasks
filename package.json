@@ -15,6 +15,7 @@
   },
   "scripts": {
     "newAccount": "ts-node source/newAccount.ts",
-    "newIdentity": "ts-node source/newIdentity.ts"
+    "newIdentity": "ts-node source/newIdentity.ts",
+    "try": "yarn ts-node source/tryStuff.ts"
   }
 }

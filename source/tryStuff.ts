@@ -6,9 +6,23 @@ import { generateAccount } from "./generators/generateAccount";
 import { generateFullDid } from "./generators/generateFullDid";
 import { generateKeyPairs } from "./generators/generateKeyPairs";
 import { u8aToHex } from "@polkadot/util";
+import { singAndSubmitBatchTx } from "./batchTransaction";
 
 tryThis();
 async function tryThis() {
+  const api = await getApi();
+  const chainName = (await api.rpc.system.chain()).toHuman();
+  console.log("working on this blockchain: ", chainName);
+
+  const extrinsicsForBatch: Kilt.SubmittableExtrinsic[] = [];
+
+  singAndSubmitBatchTx(extrinsicsForBatch);
+
+  api.disconnect();
+}
+
+async function tryThat() {
+  const api = await getApi();
   const keys = generateKeyPairs(DID_MNEMONIC);
 
   const payer = generateAccount(ACCOUNT_MNEMONIC);
@@ -32,7 +46,6 @@ async function tryThis() {
   const isUriAsExpected = didUriFromKey === didDocument.uri;
   console.log("Does life makes sense? ", isUriAsExpected);
 
-  const api = await getApi();
   const chainName = (await api.rpc.system.chain()).toHuman();
   console.log("working on this blockchain: ", chainName);
 

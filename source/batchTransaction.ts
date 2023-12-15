@@ -4,9 +4,9 @@ import { getApi } from './connection';
 import { generateAccount } from './generators/generateAccount';
 import { generateFullDid } from './generators/generateFullDid';
 import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from './configuration';
-import { makeSignExtrinsicCallBackShortCut } from './callBacks/makeSignExtrinsicCallBackShortCut';
 import { generateKeyPairs } from './generators/generateKeyPairs';
 import { makeSignCallBackShortCut } from './callBacks/makeSignCallBackShortCut';
+import { makeSignExtrinsicCallBackShortCut } from './callBacks/makeSignExtrinsicCallBackShortCut';
 
 const TRANSACTION_TIMEOUT = 5 * 60 * 1000;
 
@@ -56,7 +56,7 @@ export async function singAndSubmitTxsBatch(
 
   const api = await getApi();
 
-  const payer = generateAccount(payerMnemonic);
+  const payer = generateAccount(payerMnemonic, 'sr25519'); // For sporran compatibility  =>  sr25519
   const fullDid = await generateFullDid(payer, didMnemonic);
   const didKeyPairs = generateKeyPairs(didMnemonic);
 

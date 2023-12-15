@@ -52,20 +52,20 @@ export function generateKeyPairs(
   // But if, for example, you try to load your seed phrase in a third party wallet, you will get a different set of keys, because the derivation is different.
   // For a start, it is better to use the same derivations as Sporran. So you can load your Accounts and DIDs there and check if everything worked fine.
 
-  // const authentication = account.derive("//did//0") as Kilt.KiltKeyringPair;
+  const authentication = account.derive('//did//0') as Kilt.KiltKeyringPair;
 
-  // const assertionMethod = account.derive(
-  //   "//did//assertion//0"
-  // ) as Kilt.KiltKeyringPair;
+  const assertionMethod = account.derive(
+    '//did//assertion//0',
+  ) as Kilt.KiltKeyringPair;
 
-  // const capabilityDelegation = account.derive(
-  //   "//did//delegation//0"
-  // ) as Kilt.KiltKeyringPair;
+  const capabilityDelegation = account.derive(
+    '//did//delegation//0',
+  ) as Kilt.KiltKeyringPair;
 
-  // Dudley's method:
-  const authentication = account;
-  const assertionMethod = account;
-  const capabilityDelegation = account;
+  // // Dudley's method:
+  // const authentication = account;
+  // const assertionMethod = account;
+  // const capabilityDelegation = account;
 
   // The encryption keys, a.k.a. keyAgreement, are not natively supported by the Polkadot library.
   // So to derive this kinds of keys, we have to play a bit with lower-level details.

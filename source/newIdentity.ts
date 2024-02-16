@@ -20,11 +20,12 @@ async function makeNewIdentity(payerMnemonic: string) {
 
   const payer = generateAccount(payerMnemonic, 'sr25519');
 
+  console.log('payer account address:', payer.address);
+
   const newMnemonic = mnemonicGenerate();
   const newIdentity = await generateFullDid(payer, newMnemonic);
 
   console.log('newMnemonic: ', newMnemonic);
-  console.log('payer account ', payer.address);
   console.log('Identity: ', JSON.stringify(newIdentity, null, 2));
 
   await api.disconnect();

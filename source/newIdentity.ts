@@ -18,7 +18,7 @@ async function makeNewIdentity(payerMnemonic: string) {
   const chainName = (await api.rpc.system.chain()).toHuman();
   console.log('working on this blockchain: ', chainName);
 
-  const payer = generateAccount(payerMnemonic, 'sr25519');
+  const payer = generateAccount(payerMnemonic, 'ed25519');
 
   console.log('payer account address:', payer.address);
 

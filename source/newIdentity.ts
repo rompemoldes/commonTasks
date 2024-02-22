@@ -1,7 +1,5 @@
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 
-import * as Kilt from '@kiltprotocol/sdk-js';
-
 import { getApi } from './connection';
 import { generateAccount } from './generators/generateAccount';
 import { generateFullDid } from './generators/generateFullDid';

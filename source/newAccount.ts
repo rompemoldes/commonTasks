@@ -4,9 +4,7 @@ import * as Kilt from '@kiltprotocol/sdk-js';
 
 import { getApi } from './connection';
 import { generateAccount } from './generators/generateAccount';
-import { generateFullDid } from './generators/generateFullDid';
 
-import { ACCOUNT_MNEMONIC } from './configuration';
 import readFlags from './flags';
 
 makeNewAccount();
@@ -15,15 +13,16 @@ async function makeNewAccount(
   oldMnemonic?: string,
   derivationPath?: string,
 ): Promise<Kilt.KiltKeyringPair> {
-  const api = await getApi();
   const flags = await readFlags();
-  // flags has priority over parameters:
+  // flags have priority over parameters:
   if (flags.mnemonicTyped) {
     oldMnemonic = flags.mnemonicTyped;
   }
   if (flags.derivationPath) {
     derivationPath = flags.derivationPath;
   }
+  const api = await getApi(flags.chain);
+
   const chainName = (await api.rpc.system.chain()).toHuman();
   const newMnemonic = mnemonicGenerate();
   const mnemonic = oldMnemonic ?? newMnemonic;

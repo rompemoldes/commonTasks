@@ -1,17 +1,19 @@
+import { builtinModules as builtin } from 'node:module';
+
 import * as Kilt from '@kiltprotocol/sdk-js';
 import { u8aToHex } from '@polkadot/util';
 
 import { getApi } from './connection';
-import { singAndSubmitTxsBatch } from './batchTransaction';
 
 import readFlags from './flags';
-import { createRandomCTypeSchema } from './cType/createCTypeSchema';
+
 import { generateKeyPairs } from './generators/generateKeyPairs';
 import { generateFullDid } from './generators/generateFullDid';
 import { generateAccount } from './generators/generateAccount';
 import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from './configuration';
 
 tryThis().then(() => process.exit());
+// tryThat().then(() => process.exit());
 
 async function tryThis() {
   const api = await getApi();
@@ -42,4 +44,10 @@ async function tryThis() {
   console.log('working on this blockchain: ', chainName);
 
   api.disconnect();
+}
+
+async function tryThat() {
+  builtin.map((moduleName, index) =>
+    console.log(`Module #${index}`, moduleName),
+  );
 }

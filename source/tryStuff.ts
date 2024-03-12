@@ -1,7 +1,7 @@
-import type { AccountId32 } from '@polkadot/types/interfaces';
+import { builtinModules as builtin } from 'node:module';
 
 import * as Kilt from '@kiltprotocol/sdk-js';
-import { u8aToHex, hexToU8a } from '@polkadot/util';
+import { u8aToHex } from '@polkadot/util';
 
 import { getApi } from './connection';
 
@@ -9,7 +9,6 @@ import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from './configuration';
 import { generateAccount } from './generators/generateAccount';
 import { generateFullDid } from './generators/generateFullDid';
 import { generateKeyPairs } from './generators/generateKeyPairs';
-import { getAccountHexFromDidUri, getDidUriFromAccountHex } from './did/coding';
 
 // tryThis().then(() => process.exit());
 tryThat().then(() => process.exit());
@@ -46,16 +45,8 @@ async function tryThis() {
 }
 
 async function tryThat() {
-  // console.log("List of Node Core modules:")
-  // builtin.map((moduleName, index) =>
-  //   console.log(`Module #${index}`, moduleName),
-  // );
-
-  const didUri = 'did:kilt:4pehddkhEanexVTTzWAtrrfo2R7xPnePpuiJLC7shQU894aY';
-  // console.log('original didUri: ', didUri);
-
-  const didAsAccountHex = getAccountHexFromDidUri(didUri, true);
-  const processedDidUri = getDidUriFromAccountHex(didAsAccountHex, true);
-
-  // console.log('processedDidUri: ', processedDidUri);
+  console.log('List of Node Core modules:');
+  builtin.map((moduleName, index) =>
+    console.log(`Module #${index}`, moduleName),
+  );
 }

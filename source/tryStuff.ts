@@ -71,11 +71,6 @@ async function tryIt() {
   const didUri = getDidUriFromAccountHex(didHex, false);
   console.log('The processed  DID-URI: ', didUri);
 
-  const didFromChain = Kilt.Did.fromChain(hexToU8a(didHex) as AccountId32);
-  // const didFromChain = Kilt.Did.fromChain( hexToU8a(didHex.split('x')[1]) as AccountId32); // Both work
-
-  console.log('The didFromChain: ', didFromChain);
-
   const chainName = (await api.rpc.system.chain()).toHuman();
   console.log('working on this blockchain: ', chainName);
 

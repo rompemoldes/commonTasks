@@ -4,10 +4,11 @@ import * as Kilt from '@kiltprotocol/sdk-js';
 import { u8aToHex, hexToU8a } from '@polkadot/util';
 
 export function getDidUriFromAccountHex(
-  didAccount: Kilt.HexString,
+  didAccount: Kilt.HexString | string,
   verbose: boolean = false,
 ): Kilt.DidUri {
   verbose && console.log('DID as HexString of Account Address:' + didAccount);
+  // hexToU8a accepts both hexStrings with and without the "0x" prefix.
   const didU8a = hexToU8a(didAccount);
 
   const didUri = Kilt.Did.fromChain(didU8a as AccountId32);

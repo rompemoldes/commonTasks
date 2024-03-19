@@ -21,7 +21,9 @@ export function getAccountHexFromDidUri(
 ): Kilt.HexString {
   verbose && console.log('DID-URI being parsed: ' + didUri);
 
-  const didU8a = Kilt.Utils.Crypto.decodeAddress(didUri.split(':')[2]);
+  const didU8a = Kilt.Utils.Crypto.decodeAddress(Kilt.Did.toChain(didUri));
+  // const didU8a = Kilt.Utils.Crypto.decodeAddress(didUri.split(':')[2]);
+
   const didAsAccountHex = u8aToHex(didU8a);
   verbose &&
     console.log('DID as HexString of Account Address: ' + didAsAccountHex);

@@ -1,14 +1,17 @@
+import type { U8aFixed } from '@polkadot/types-codec';
+
 import * as Kilt from '@kiltprotocol/sdk-js';
 
-import { createCTypeTransaction } from './cType/createCTypeTransaction';
-import { makeSignExtrinsicCallBackShortCut } from './callBacks/makeSignExtrinsicCallBackShortCut';
-import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from './configuration';
-import { getApi } from './connection';
-import readFlags from './flags';
-import { generateAccount } from './generators/generateAccount';
-import { generateKeyPairs } from './generators/generateKeyPairs';
+import { createCTypeTransaction } from '../cType/createCTypeTransaction';
+import { makeSignExtrinsicCallBackShortCut } from '../callBacks/makeSignExtrinsicCallBackShortCut';
+import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from '../configuration';
+import { getApi } from '../connection';
+import readFlags from '../flags';
+import { generateAccount } from '../generators/generateAccount';
+import { generateKeyPairs } from '../generators/generateKeyPairs';
 
-const madeUpAssetDidUri = 'did:asset:rare33:Mighty666.lit420:6969:CrushingIt';
+const madeUpAssetDidUri =
+  'did:asset:eip155:7.erc20:0x6b175474e89094c44da98b954eedeac335271d0f';
 
 async function publishCredential() {
   const flags = await readFlags();

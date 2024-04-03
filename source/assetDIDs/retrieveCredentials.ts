@@ -1,6 +1,6 @@
 import * as Kilt from '@kiltprotocol/sdk-js';
 
-import { getApi } from './connection';
+import { getApi } from '../connection';
 
 const cryptoKitty =
   'did:asset:eip155:1.erc721:0x06012c8cf97bead5deae237070f9587f8e7a266d:634446';
@@ -24,6 +24,10 @@ export async function retrieveAllAssetCredentials(
   }
   return itsPublicCredentials;
 }
-retrieveAllAssetCredentials(cryptoKitty).then(() => process.exit());
+// retrieveAllAssetCredentials(cryptoKitty).then(() => process.exit());
 // retrieveAllAssetCredentials(cyberPunks).then(() => process.exit());
 // retrieveAllAssetCredentials(cyberPunk).then(() => process.exit());
+
+retrieveAllAssetCredentials(
+  'did:asset:solana:DtyWjcJ3f312ojBQxTtrid.algo:DtyWjcJ3f312ojBQxTtrid:20',
+).then(() => process.exit());

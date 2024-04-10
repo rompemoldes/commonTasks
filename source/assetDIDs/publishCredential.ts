@@ -11,7 +11,7 @@ import { generateAccount } from '../generators/generateAccount';
 import { generateKeyPairs } from '../generators/generateKeyPairs';
 
 const madeUpAssetDidUri =
-  'did:asset:eip155:7.erc20:0x6b175474e89094c44da98b954eedeac335271d0f';
+  'did:asset:eip155:56.erc20:0x6b175474e89094c44da98b954eedeac335271d0f';
 
 async function publishCredential() {
   const flags = await readFlags();
@@ -36,19 +36,16 @@ async function publishCredential() {
     await Kilt.CType.fetchFromChain(cTypeSchema.$id);
   } catch (error) {
     console.log(`CType ${cTypeSchema.$id} not yet on chain. Let's anchor it!`);
-    try {
-      // Anchor the new CType on the chain
-      const authorizedCTypeCreationTx = await createCTypeTransaction(
-        cTypeSchema,
-        didUri,
-        payer.address,
-        makeSignExtrinsicCallBackShortCut(didKeyPairs.assertionMethod),
-      );
 
-      await Kilt.Blockchain.signAndSubmitTx(authorizedCTypeCreationTx, payer);
-    } catch (error) {
-      console.log(error);
-    }
+    // Anchor the new CType on the chain
+    const authorizedCTypeCreationTx = await createCTypeTransaction(
+      cTypeSchema,
+      didUri,
+      payer.address,
+      makeSignExtrinsicCallBackShortCut(didKeyPairs.assertionMethod),
+    );
+
+    await Kilt.Blockchain.signAndSubmitTx(authorizedCTypeCreationTx, payer);
   }
 
   const newOfflineCredential = createCredential(

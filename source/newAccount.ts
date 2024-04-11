@@ -7,11 +7,12 @@ import { generateAccount } from './generators/generateAccount';
 
 import readFlags from './flags';
 
-makeNewAccount();
+makeNewAccount(undefined, undefined, 'sr25519');
 
 async function makeNewAccount(
   oldMnemonic?: string,
   derivationPath?: string,
+  scheme: 'ecdsa' | 'sr25519' | 'ed25519' = 'ed25519',
 ): Promise<Kilt.KiltKeyringPair> {
   const flags = await readFlags();
   // flags have priority over parameters:
@@ -26,7 +27,7 @@ async function makeNewAccount(
   const chainName = (await api.rpc.system.chain()).toHuman();
   const newMnemonic = mnemonicGenerate();
   const mnemonic = oldMnemonic ?? newMnemonic;
-  const baseAccount = generateAccount(mnemonic);
+  const baseAccount = generateAccount(mnemonic, scheme);
 
   let account = baseAccount;
 

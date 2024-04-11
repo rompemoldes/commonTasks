@@ -42,7 +42,9 @@ export function generateKeyPairs(
   mnemonic: string,
   scheme: 'ecdsa' | 'sr25519' | 'ed25519' = 'ed25519',
 ) {
-  // Currently, the default the key type used by the Kilt-team is "ed25519". Better to use it for compatibility.
+  // Considerations for compatibility:
+  // Currently, the default the key type used by the Sporran is "sr25519".
+  // But the "Default" set by the the team is "ed25519"
   const account = Kilt.Utils.Crypto.makeKeypairFromSeed(
     mnemonicToMiniSecret(mnemonic),
     scheme,
@@ -63,6 +65,7 @@ export function generateKeyPairs(
   ) as Kilt.KiltKeyringPair;
 
   // // Dudley's method:
+  // Scheme 'ed25519'
   // const authentication = account;
   // const assertionMethod = account;
   // const capabilityDelegation = account;

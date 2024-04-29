@@ -1,9 +1,5 @@
 import { builtinModules as builtin } from 'node:module';
 
-import { hexToU8a } from '@polkadot/util';
-
-import type { AccountId32 } from '@polkadot/types/interfaces';
-
 import * as Kilt from '@kiltprotocol/sdk-js';
 import { u8aToHex } from '@polkadot/util';
 

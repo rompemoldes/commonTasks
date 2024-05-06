@@ -23,6 +23,7 @@ async function makeNewAccount(
     derivationPath = flags.derivationPath;
   }
   const api = await getApi(flags.chain);
+  console.log('Using this scheme for the account : ', scheme);
 
   const chainName = (await api.rpc.system.chain()).toHuman();
   const newMnemonic = mnemonicGenerate();

@@ -4,9 +4,10 @@ import { getApi } from './connection';
 import { generateAccount } from './generators/generateAccount';
 import { generateFullDid } from './generators/generateFullDid';
 import { ACCOUNT_MNEMONIC, DID_MNEMONIC } from './configuration';
-import { generateKeyPairs } from './generators/generateKeyPairs';
+// import { generateKeyPairs } from './generators/generateKeyPairs';
 import { makeSignCallBackShortCut } from './callBacks/makeSignCallBackShortCut';
-import { makeSignExtrinsicCallBackShortCut } from './callBacks/makeSignExtrinsicCallBackShortCut';
+// import { makeSignExtrinsicCallBackShortCut } from './callBacks/makeSignExtrinsicCallBackShortCut';
+import { generateKeyPairsTheSporranWay } from './generators/generateKeyPairsSporranWay';
 
 const TRANSACTION_TIMEOUT = 5 * 60 * 1000;
 
@@ -54,11 +55,18 @@ export async function singAndSubmitTxsBatch(
     verbose = false,
   } = options;
 
+  if (!payerMnemonic) {
+    throw new Error('No Mnemonic for the payer account passed');
+  }
+  if (!didMnemonic) {
+    throw new Error('No Mnemonic for the DID  passed');
+  }
   const api = await getApi();
 
   const payer = generateAccount(payerMnemonic, 'sr25519'); // For sporran compatibility  =>  sr25519
-  const fullDid = await generateFullDid(payer, didMnemonic);
-  const didKeyPairs = generateKeyPairs(didMnemonic);
+  const fullDid = await generateFullDid(payer, didMnemonic, 'sr25519');
+  // const didKeyPairs = generateKeyPairs(didMnemonic);
+  const didKeyPairs = generateKeyPairsTheSporranWay(didMnemonic);
 
   const didAssertionKeyUri: Kilt.DidResourceUri = `did:kilt:${
     didKeyPairs.assertionMethod.address

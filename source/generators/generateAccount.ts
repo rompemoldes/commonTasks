@@ -12,7 +12,7 @@ import * as Kilt from '@kiltprotocol/sdk-js';
  */
 export function generateAccount(
   mnemonic: string,
-  scheme: 'ecdsa' | 'sr25519' | 'ed25519' = 'ed25519',
+  scheme: 'ecdsa' | 'sr25519' | 'ed25519' = 'sr25519',
 ): Kilt.KiltKeyringPair {
   // transform to a U8 Array.
   const mnemonicToU8A = mnemonicToMiniSecret(mnemonic);

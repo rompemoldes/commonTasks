@@ -22,7 +22,7 @@ async function makeNewIdentity(payerMnemonic?: string) {
     throw new Error('No Mnemonic for the payer account passed');
   }
 
-  const payer = generateAccount(payerMnemonic, 'ed25519');
+  const payer = generateAccount(payerMnemonic, 'sr25519');
 
   console.log('payer account address:', payer.address);
 

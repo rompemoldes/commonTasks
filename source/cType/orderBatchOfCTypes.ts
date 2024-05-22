@@ -24,9 +24,13 @@ async function orderBatchOfCTypes() {
 
     extrinsicsForBatch.push(cTypeCreationTx);
   }
-  await singAndSubmitTxsBatch(extrinsicsForBatch, flags.batchType, {
-    verbose: flags.verbose,
-  });
+  try {
+    await singAndSubmitTxsBatch(extrinsicsForBatch, flags.batchType, {
+      verbose: flags.verbose,
+    });
+  } catch (error) {
+    throw new Error(JSON.stringify(error, null, 2));
+  }
 
   console.log('working on this blockchain: ', chainName);
 

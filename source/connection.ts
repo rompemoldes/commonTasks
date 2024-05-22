@@ -2,7 +2,7 @@ import * as Kilt from '@kiltprotocol/sdk-js';
 
 import { WSS_ADDRESS } from './configuration';
 
-const spiritnet_socket = 'wss://spiritnet.kilt.io';
+const spiritnet_socket = 'wss://kilt-rpc.dwellir.com'; //'wss://spiritnet.kilt.io';
 const peregrine_socket = 'wss://peregrine.kilt.io';
 const wssAddress = WSS_ADDRESS;
 

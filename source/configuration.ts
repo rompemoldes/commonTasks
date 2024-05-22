@@ -7,14 +7,19 @@ dotenv.config();
 export const WSS_ADDRESS = process.env.WSS_ADDRESS;
 // export const DID = loadEnv("DID") as Kilt.DidUri;
 // export const SECRET_BACKUP_PHRASE = loadEnv("SECRET_BACKUP_PHRASE");
-export const ACCOUNT_MNEMONIC = loadEnv('ACCOUNT_MNEMONIC');
-export const DID_MNEMONIC = loadEnv('DID_MNEMONIC');
+export const ACCOUNT_MNEMONIC = loadEnv('ACCOUNT_MNEMONIC', false);
+export const DID_MNEMONIC = loadEnv('DID_MNEMONIC', false);
 
-function loadEnv(name: string) {
+function loadEnv(name: string, compulsory: boolean = true) {
   const envValue = process.env[name];
-  if (!envValue) {
+  if (!envValue && compulsory) {
     throw new Error(
       `Environment constant '${name}' is missing. Define it on the project's root directory '.env'-file. \n`,
+    );
+  }
+  if (!envValue) {
+    console.log(
+      `Environment constant '${name}' is missing from '.env'-file. Working with default fallback.  \n`,
     );
   }
   return envValue;

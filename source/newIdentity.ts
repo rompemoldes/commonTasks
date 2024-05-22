@@ -9,12 +9,18 @@ import readFlags from './flags';
 
 makeNewIdentity(ACCOUNT_MNEMONIC);
 
-async function makeNewIdentity(payerMnemonic: string) {
+async function makeNewIdentity(payerMnemonic?: string) {
   const flags = await readFlags();
   flags.verbose && console.log('Flags: ', flags);
   const api = await getApi(flags.chain);
   const chainName = (await api.rpc.system.chain()).toHuman();
   console.log('working on this blockchain: ', chainName);
+
+  payerMnemonic = payerMnemonic ?? flags.mnemonicTyped;
+
+  if (!payerMnemonic) {
+    throw new Error('No Mnemonic for the payer account passed');
+  }
 
   const payer = generateAccount(payerMnemonic, 'ed25519');
 

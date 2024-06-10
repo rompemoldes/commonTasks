@@ -1,0 +1,3 @@
+### Get the address of an account on the command line:
+
+$ `node -e "console.log(require('@kiltprotocol/sdk-js').Utils.Crypto.makeKeypairFromUri('flip clown toddler kidney inside loud shuffle scene daring canoe sorry pave').address)"`

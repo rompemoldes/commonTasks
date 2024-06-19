@@ -7,6 +7,7 @@
     "@polkadot/util-crypto": "latest",
     "dotenv": "^16.3.1",
     "random-word": "^2.0.0",
+    "resend": "^3.3.0",
     "tslib": "^2.6.2"
   },
   "devDependencies": {

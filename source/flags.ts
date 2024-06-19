@@ -42,6 +42,11 @@ export default async function readFlags() {
       alias: 'b',
       default: 'independent',
     },
+    input: {
+      description: 'Generic Input through the terminal',
+      type: 'string',
+      alias: 'i',
+    },
   }).argv;
 
   return {
@@ -52,6 +57,7 @@ export default async function readFlags() {
     verbose: argv.verbose,
     bulkSize: argv.bulkSize,
     batchType: narrowBatchType(argv.batchType),
+    input: argv.input,
   };
 }
 

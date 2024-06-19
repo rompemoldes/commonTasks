@@ -29,6 +29,7 @@
     "newIdentity": "ts-node source/newIdentity.ts",
     "newSporranIdentity": "ts-node source/newSporranIdentity.ts",
     "cTypeWholesale": "ts-node source/cType/orderBatchOfCTypes.ts",
+    "translate": "ts-node source/did/translate.ts",
     "try": "yarn ts-node source/tryStuff.ts",
     "lint": "eslint --ext .js,.ts --config ./.eslintrc.json \"source/**/*.ts\"",
     "fix": "eslint --ext .js,.ts --config ./.eslintrc.json --fix \"source/**/*.ts\""

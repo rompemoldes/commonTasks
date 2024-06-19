@@ -6,9 +6,11 @@ import { getDidUriFromAccountHex, getAccountHexFromDidUri } from './coding';
 
 translate().then(() => process.exit());
 
+/**
+ * Translates from a `HexString of Account Address` to it's corresponding `DID-URI` and vice versa.
+ */
 async function translate(inputDid?: string) {
   const flags = await readFlags();
-  // flags.verbose && console.log('Flags: ', flags);
 
   inputDid = inputDid ?? flags.input;
 

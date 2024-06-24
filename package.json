@@ -1,6 +1,9 @@
 {
   "name": "commonTasks",
   "packageManager": "yarn@4.3.1",
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "@kiltprotocol/sdk-js": "^0.35.0",
     "@polkadot/util": "latest",

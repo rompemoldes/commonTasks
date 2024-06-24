@@ -4,6 +4,7 @@ import { getApi } from '../connection';
 import { singAndSubmitTxsBatch } from '../batchTransaction';
 
 import readFlags from '../flags';
+
 import { createRandomCTypeSchema } from './createCTypeSchema';
 
 orderBatchOfCTypes().then(() => process.exit());

@@ -7,7 +7,7 @@ export function getDidUriFromAccountHex(
   didAccount: Kilt.HexString | string,
   verbose: boolean = false,
 ): Kilt.DidUri {
-  verbose && console.log('DID as HexString of Account Address:' + didAccount);
+  verbose && console.log('DID as HexString of Account Address: ' + didAccount);
   // hexToU8a accepts both hexStrings with and without the "0x" prefix.
   const didU8a = hexToU8a(didAccount);
 

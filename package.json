@@ -10,9 +10,9 @@
     "@polkadot/api": "^12.4.2",
     "@polkadot/api-augment": "^12.4.2",
     "@polkadot/types": "^12.4.2",
-    "@polkadot/types-codec": "^12.4.2",
     "@polkadot/util": "latest",
     "@polkadot/util-crypto": "latest",
+    "@snowbridge/api": "^0.1.19",
     "dotenv": "^16.3.1",
     "random-word": "^2.0.0",
     "tslib": "^2.6.2"
@@ -31,6 +31,9 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "yargs": "^17.7.2"
+  },
+  "resolutions": {
+    "@polkadot/api": "^11.2.1"
   },
   "scripts": {
     "newAccount": "ts-node source/newAccount.ts",

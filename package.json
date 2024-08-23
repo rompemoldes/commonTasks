@@ -5,7 +5,12 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@kiltprotocol/augment-api": "^1.11300.0",
     "@kiltprotocol/sdk-js": "^0.35.0",
+    "@polkadot/api": "^12.4.2",
+    "@polkadot/api-augment": "^12.4.2",
+    "@polkadot/types": "^12.4.2",
+    "@polkadot/types-codec": "^12.4.2",
     "@polkadot/util": "latest",
     "@polkadot/util-crypto": "latest",
     "dotenv": "^16.3.1",

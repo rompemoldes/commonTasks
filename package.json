@@ -7,11 +7,11 @@
   "dependencies": {
     "@kiltprotocol/augment-api": "^1.11300.0",
     "@kiltprotocol/sdk-js": "^0.35.0",
-    "@polkadot/api": "^12.4.2",
-    "@polkadot/api-augment": "^12.4.2",
-    "@polkadot/types": "^12.4.2",
-    "@polkadot/util": "latest",
-    "@polkadot/util-crypto": "latest",
+    "@polkadot/api": "^11.3.1",
+    "@polkadot/api-augment": "^11.3.1",
+    "@polkadot/types": "^11.3.1",
+    "@polkadot/util": "^12.6.2",
+    "@polkadot/util-crypto": "^12.6.2",
     "@snowbridge/api": "^0.1.19",
     "dotenv": "^16.3.1",
     "random-word": "^2.0.0",
@@ -31,9 +31,6 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
     "yargs": "^17.7.2"
-  },
-  "resolutions": {
-    "@polkadot/api": "^11.2.1"
   },
   "scripts": {
     "newAccount": "ts-node source/newAccount.ts",

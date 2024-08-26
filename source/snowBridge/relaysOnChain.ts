@@ -1,17 +1,35 @@
-// import { PolkadotPrimitivesV5PersistedValidationData } from '@kiltprotocol/augment-api/index';
-import { ApiPromise } from '@polkadot/api';
+import { ApiPromise, HttpProvider, WsProvider } from '@polkadot/api';
 import { Bytes, Option, Struct, u32 } from '@polkadot/types';
-import { getApi } from './getApi';
-import { SnowbridgeEnvironment } from '@snowbridge/api/dist/environment';
 import { H256 } from '@polkadot/types/interfaces';
+// import { PolkadotPrimitivesV5PersistedValidationData } from '@kiltprotocol/augment-api/index';
 
-// explicit Type Definition:
-/** @name PolkadotPrimitivesV5PersistedValidationData (352) */
+import {
+  SnowbridgeEnvironment,
+  TransferLocation,
+  SNOWBRIDGE_ENV,
+} from '@snowbridge/api/dist/environment';
+
+// // explicit Definition:
 interface PolkadotPrimitivesV5PersistedValidationData extends Struct {
   readonly parentHead: Bytes;
   readonly relayParentNumber: u32;
   readonly relayParentStorageRoot: H256;
   readonly maxPovSize: u32;
+}
+
+export async function getApi(wsUrl: string): Promise<ApiPromise | undefined> {
+  try {
+    const api = await ApiPromise.create({
+      provider: wsUrl.startsWith('http')
+        ? new HttpProvider(wsUrl)
+        : new WsProvider(wsUrl),
+      throwOnConnect: true,
+    });
+    return api;
+  } catch (error) {
+    console.error(`Could not connect to api under ${wsUrl}`);
+    return undefined;
+  }
 }
 
 async function getRelaysChainLastParentBlockInfo(api: ApiPromise) {
@@ -42,41 +60,10 @@ async function getRelaysChainLastParentBlockInfo(api: ApiPromise) {
   };
 }
 
-/** Unused */
-async function getLastParentBlockRelaysValidation(api: ApiPromise) {
-  const signedBlock = await api.rpc.chain.getBlock();
-
-  const validationDataExtrinsic = signedBlock.block.extrinsics.find((extr) => {
-    const methy = extr.method.method;
-    console.log('method: ', methy);
-    return methy === 'setValidationData';
-  });
-
-  if (!validationDataExtrinsic) {
-    throw new Error(
-      'This is not a parachain or validation data is unavailable',
-    );
-  }
-  const { relayParentNumber, relayParentStorageRoot } = (
-    validationDataExtrinsic?.method.args[0] as any
-  ).validationData;
-
-  const lastRelayParentBlock = relayParentNumber.toNumber();
-  const lastRelayParentBlockStorageRoot = relayParentStorageRoot.toHex();
-
-  console.log('lastRelayParentBlock: ', lastRelayParentBlock);
-  console.log(
-    'lastRelayParentBlockStorageRoot: ',
-    lastRelayParentBlockStorageRoot,
-  );
-
-  return {
-    lastRelayParentBlock,
-    lastRelayParentBlockStorageRoot,
-  };
-}
-
-async function relaysOn(paraApi: ApiPromise, relayApis: ApiPromise[]) {
+export async function relaysOnChain(
+  paraApi: ApiPromise,
+  relayApis: ApiPromise[],
+): Promise<string> {
   const { lastRelayParentBlock, lastRelayParentBlockStorageRoot } =
     await getRelaysChainLastParentBlockInfo(paraApi);
 
@@ -98,7 +85,7 @@ async function relaysOn(paraApi: ApiPromise, relayApis: ApiPromise[]) {
       lastRelayParentBlockStorageRoot
     ) {
       console.log(`"${parachainName}" relays on chain: ${relaychainName}`);
-      return relaychainName;
+      return relaychainName.toString();
     }
     console.log(
       `"${parachainName}" does not relay on chain: ${relaychainName}`,
@@ -109,27 +96,6 @@ async function relaysOn(paraApi: ApiPromise, relayApis: ApiPromise[]) {
 
   return unknownRelayChain;
 }
-
-// Example usage
-const paraWsUrl = 'wss://rilt.kilt.io';
-// const wsUrl = 'wss://kilt.dotters.network';
-const relayWSs = [
-  'https://polkadot-rpc.dwellir.com',
-  'ws://127.0.0.1:9944',
-  'https://rococo-rpc.polkadot.io',
-];
-getApi(paraWsUrl)
-  .then(async (paraApi) => {
-    const relayApis = (await Promise.all(relayWSs.map(getApi))).filter(
-      (api): api is ApiPromise => api !== undefined,
-    );
-    if (!paraApi) {
-      throw new Error('Api of parachain undefined');
-    }
-    return relaysOn(paraApi, relayApis);
-  })
-  .catch((error) => console.error('Error:', error))
-  .finally(() => process.exit());
 
 /** Returns to which `SnowbridgeEnvironment` the parachain under the give `paraApi` corresponds to. */
 export async function getSnowEnvBasedOnRelayChain(
@@ -146,7 +112,7 @@ export async function getSnowEnvBasedOnRelayChain(
   //   ({ config }) => config.RELAY_CHAIN_URL,
   // );
 
-  for (const env of coldEnvironments) {
+  for await (const env of coldEnvironments) {
     const relayApi = await getApi(env.config.RELAY_CHAIN_URL);
 
     if (!relayApi) {

@@ -1,8 +1,8 @@
 import { ApiPromise, HttpProvider, WsProvider } from '@polkadot/api';
 
-/** Tries to establish an API connection with a _Substrate_ blockchain node under the given URL `wsUrl`.
+/** Attempts to establish an API connection with a _Substrate_ blockchain node using the provided URL `wsUrl`.
  *
- * If the initial connection is successful, returns the api; otherwise returns `undefined`.
+ * If the initial connection is successful, returns a ready to use `ApiPromise` instance; otherwise returns `undefined`.
  *
  * If the WebSocket turns unavailable after the initial connection, it will persistently retry to connect.
  *

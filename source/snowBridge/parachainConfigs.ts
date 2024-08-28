@@ -9,7 +9,7 @@ import {
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { IERC20Metadata__factory } from '@snowbridge/contract-types';
 
-import { getApi } from './getApi';
+import { getSubstApi } from './getSubstApi';
 import { getEtherApi } from './getEtherApi';
 import { getSnowEnvBasedOnRelayChain } from './relaysOnChain';
 
@@ -102,7 +102,7 @@ export async function buildParachainConfig(
   paraEndpoint: string,
   etherApiKey: string,
 ): Promise<ParaConfig | void> {
-  const paraApi = await getApi(paraEndpoint);
+  const paraApi = await getSubstApi(paraEndpoint);
 
   if (!paraApi) {
     console.log(`Could not connect to parachain API under "${paraEndpoint}"`);

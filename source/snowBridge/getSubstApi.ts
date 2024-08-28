@@ -1,6 +1,8 @@
 import { ApiPromise, HttpProvider, WsProvider } from '@polkadot/api';
 
-export async function getApi(wsUrl: string): Promise<ApiPromise | undefined> {
+export async function getSubstApi(
+  wsUrl: string,
+): Promise<ApiPromise | undefined> {
   try {
     const api = await ApiPromise.create({
       provider: wsUrl.startsWith('http')

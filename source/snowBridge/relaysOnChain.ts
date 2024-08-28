@@ -8,6 +8,7 @@ import {
   TransferLocation,
   SNOWBRIDGE_ENV,
 } from '@snowbridge/api/dist/environment';
+import { getSubstApi } from './getSubstApi';
 
 // // explicit Definition:
 interface PolkadotPrimitivesV5PersistedValidationData extends Struct {
@@ -15,21 +16,6 @@ interface PolkadotPrimitivesV5PersistedValidationData extends Struct {
   readonly relayParentNumber: u32;
   readonly relayParentStorageRoot: H256;
   readonly maxPovSize: u32;
-}
-
-export async function getApi(wsUrl: string): Promise<ApiPromise | undefined> {
-  try {
-    const api = await ApiPromise.create({
-      provider: wsUrl.startsWith('http')
-        ? new HttpProvider(wsUrl)
-        : new WsProvider(wsUrl),
-      throwOnConnect: true,
-    });
-    return api;
-  } catch (error) {
-    console.error(`Could not connect to api under ${wsUrl}`);
-    return undefined;
-  }
 }
 
 async function getRelaysChainLastParentBlockInfo(api: ApiPromise) {
@@ -113,7 +99,7 @@ export async function getSnowEnvBasedOnRelayChain(
   // );
 
   for await (const env of coldEnvironments) {
-    const relayApi = await getApi(env.config.RELAY_CHAIN_URL);
+    const relayApi = await getSubstApi(env.config.RELAY_CHAIN_URL);
 
     if (!relayApi) {
       continue;

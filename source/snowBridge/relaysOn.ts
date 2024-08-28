@@ -1,7 +1,7 @@
 // import { PolkadotPrimitivesV5PersistedValidationData } from '@kiltprotocol/augment-api/index';
 import { ApiPromise } from '@polkadot/api';
 import { Bytes, Option, Struct, u32 } from '@polkadot/types';
-import { getApi } from './getApi';
+import { getSubstApi } from './getSubstApi';
 import { SnowbridgeEnvironment } from '@snowbridge/api/dist/environment';
 import { H256 } from '@polkadot/types/interfaces';
 
@@ -118,9 +118,9 @@ const relayWSs = [
   'ws://127.0.0.1:9944',
   'https://rococo-rpc.polkadot.io',
 ];
-getApi(paraWsUrl)
+getSubstApi(paraWsUrl)
   .then(async (paraApi) => {
-    const relayApis = (await Promise.all(relayWSs.map(getApi))).filter(
+    const relayApis = (await Promise.all(relayWSs.map(getSubstApi))).filter(
       (api): api is ApiPromise => api !== undefined,
     );
     if (!paraApi) {
@@ -147,7 +147,7 @@ export async function getSnowEnvBasedOnRelayChain(
   // );
 
   for (const env of coldEnvironments) {
-    const relayApi = await getApi(env.config.RELAY_CHAIN_URL);
+    const relayApi = await getSubstApi(env.config.RELAY_CHAIN_URL);
 
     if (!relayApi) {
       continue;

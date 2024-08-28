@@ -145,7 +145,7 @@ export async function buildParachainConfig(
   // Get information about the wrapped erc20 token from ethereum
   const etherEndpoint =
     SNOWBRIDGE_ENV[snowBridgeEnvName].config.ETHEREUM_API(etherApiKey);
-  const etherApi = getEtherApi(etherEndpoint);
+  const etherApi = await getEtherApi(etherEndpoint);
 
   if (!etherApi) {
     console.log(`Could not connect to ethereum API under "${etherEndpoint}"`);

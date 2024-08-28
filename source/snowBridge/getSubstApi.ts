@@ -31,7 +31,9 @@ export async function getSubstApi(
 
     return await api.isReadyOrError;
   } catch (error) {
-    console.error(`Could not connect to API under ${wsUrl}`);
+    console.error(
+      `Could not connect to API under ${wsUrl}. Because: ${error instanceof Error ? error.message : JSON.stringify(error)}`,
+    );
 
     // stop from trying to reconnect to the webSocket
     provider.disconnect();

@@ -1,4 +1,5 @@
 // import * as Kilt from '@kiltprotocol/sdk-js';
+import { getEtherApi } from './getEtherApi';
 import { getSubstApi } from './getSubstApi';
 
 async function testApi(webSocketAddress: string) {
@@ -9,6 +10,7 @@ async function testApi(webSocketAddress: string) {
     return api;
   } catch (e) {
     if (e instanceof Error) {
+      console.log('throwing here');
       throw e;
     }
     throw new Error(JSON.stringify(e));
@@ -18,6 +20,8 @@ async function testApi(webSocketAddress: string) {
 // const webSocketAddress = 'ws://127.0.0.1:9004';
 // const webSocketAddress = 'wss://sys.ibp.network/asset-hub-polkadot';
 const webSocketAddress = 'wss://kilt-rpc.dwellir.com';
+// const webSocketAddress = 'https://lodestar-mainnet.chainsafe.io';
+// const webSocketAddress = 'wss://eth-mainnet.ws.alchemyapi.io/ws/';
 
 testApi(webSocketAddress)
   .then(async (api) => {

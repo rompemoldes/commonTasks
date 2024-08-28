@@ -9,15 +9,16 @@ export const parachainConfigs: RegisterOfParaConfigs = {};
 export async function populateParachainConfigs() {
   configDotenv();
   const paraNodes = process.env.PARACHAIN_ENDPOINTS?.split(';');
+  const etherApiKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
 
-  console.log(paraNodes);
+  console.log('paraNodes: ', paraNodes);
 
-  if (!paraNodes) {
+  if (!paraNodes || !etherApiKey) {
     return;
   }
 
   for await (const endpoint of paraNodes) {
-    const newConfig = await buildParachainConfig(endpoint);
+    const newConfig = await buildParachainConfig(endpoint, etherApiKey);
 
     // // debugger:
     // console.log(

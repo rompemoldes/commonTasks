@@ -1,16 +1,18 @@
 import { ApiPromise } from '@polkadot/api';
 import { TypeDefInfo } from '@polkadot/types';
-import {
-  assetErc20Metadata,
-  parachainNativeAsset,
-} from '@snowbridge/api/dist/assets';
+import { parachainNativeAsset } from '@snowbridge/api/dist/assets';
 import {
   AddressType,
   SNOWBRIDGE_ENV,
   TransferLocation,
 } from '@snowbridge/api/dist/environment';
-import { getSnowEnvBasedOnRelayChain } from './relaysOnChain';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { IERC20Metadata__factory } from '@snowbridge/contract-types';
+
 import { getApi } from './getApi';
+import { getEtherApi } from './getEtherApi';
+import { getSnowEnvBasedOnRelayChain } from './relaysOnChain';
+
 // import { PolkadotPrimitivesV5PersistedValidationData } from '@kiltprotocol/augment-api/index';
 
 // const snowbridgeEnvironmentNames = Object.keys(SNOWBRIDGE_ENV) as Array<string>;
@@ -97,12 +99,13 @@ export interface RegisterOfParaConfigs {
 // };
 
 export async function buildParachainConfig(
-  endpoint: string,
+  paraEndpoint: string,
+  etherApiKey: string,
 ): Promise<ParaConfig | void> {
-  const paraApi = await getApi(endpoint);
+  const paraApi = await getApi(paraEndpoint);
 
   if (!paraApi) {
-    console.log(`Could not connect to parachain API under "${endpoint}"`);
+    console.log(`Could not connect to parachain API under "${paraEndpoint}"`);
     return;
   }
 
@@ -131,23 +134,41 @@ export async function buildParachainConfig(
 
   console.log(`The address type used is: ${addressType}`);
 
-  // Get information about the wrapped erc20 token
+  // Get information about the wrapped erc20 token from parachain
   const switchPalletName = 'assetSwitchPool1'; // assumes that first pool is between native token and its erc20 wrapped counterpart
   const switchPair = await paraApi.query[switchPalletName].switchPair();
-  const contractAddress = (switchPair as any).unwrap().remoteAssetId.toJSON();
-  // .v4.interior.x2[1].accountKey20.key;
-
-  // const a = await assetErc20Metadata(,contractAddress )
+  const contractAddress = (switchPair as any).unwrap().remoteAssetId.toJSON().v4
+    .interior.x2[1].accountKey20.key;
 
   console.log('contractAddress: ', contractAddress);
 
+  // Get information about the wrapped erc20 token from ethereum
+  const etherEndpoint =
+    SNOWBRIDGE_ENV[snowBridgeEnvName].config.ETHEREUM_API(etherApiKey);
+  const etherApi = getEtherApi(etherEndpoint);
+
+  if (!etherApi) {
+    console.log(`Could not connect to ethereum API under "${etherEndpoint}"`);
+    return;
+  }
+
+  const ercTokenMetadata = IERC20Metadata__factory.connect(
+    contractAddress,
+    etherApi,
+  );
+  const [ercName, ercSymbol, ercDecimals] = await Promise.all([
+    ercTokenMetadata.name(),
+    ercTokenMetadata.symbol(),
+    ercTokenMetadata.decimals(),
+  ]);
+
   paraApi.disconnect();
-  // assetHubApi.disconnect();
+  etherApi.destroy();
 
   return {
     name: chainName,
     snowEnv: snowBridgeEnvName,
-    endpoint: endpoint,
+    endpoint: paraEndpoint,
     pallet: switchPalletName,
     parachainId: paraId,
     location: {
@@ -165,8 +186,7 @@ export async function buildParachainConfig(
       },
       erc20tokensReceivable: [
         {
-          // TODO: find a way to fetch
-          id: 'w' + tokenSymbol,
+          id: ercSymbol,
           address: contractAddress,
           minimumTransferAmount,
         },

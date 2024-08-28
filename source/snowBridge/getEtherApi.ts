@@ -18,3 +18,14 @@
 // Do we really need to add this to the environment?
 // the metadata is being fetch here again anyways:
 // https://github.com/KILTprotocol/snowbridge-app/blob/a1818fe7387c6467fd90e73e9d9f817615e83525/hooks/useSnowbridgeContext.ts#L40-L41
+
+import { AbstractProvider, JsonRpcProvider, WebSocketProvider } from 'ethers';
+
+export function getEtherApi(wsUrl: string): AbstractProvider | undefined {
+  if (wsUrl.startsWith('http')) {
+    return new JsonRpcProvider(wsUrl);
+  }
+  if (wsUrl.startsWith('ws')) {
+    return new WebSocketProvider(wsUrl);
+  }
+}

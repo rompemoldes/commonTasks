@@ -3,7 +3,7 @@ import { configDotenv } from 'dotenv';
 import {
   buildParachainConfig,
   RegisterOfParaConfigs,
-} from './parachainConfigs';
+} from './buildParachainConfig';
 
 export const parachainConfigs: RegisterOfParaConfigs = {};
 
@@ -20,16 +20,6 @@ export async function populateParachainConfigs() {
 
   for await (const endpoint of paraNodes) {
     const newConfig = await buildParachainConfig(endpoint, etherApiKey);
-
-    // // debugger:
-    // console.log(
-    //   'newConfig: ',
-    //   JSON.stringify(
-    //     newConfig,
-    //     (_, v) => (typeof v === 'bigint' ? v.toString() : v), // replacer of bigInts
-    //     2,
-    //   ),
-    // );
 
     if (!newConfig) {
       return;

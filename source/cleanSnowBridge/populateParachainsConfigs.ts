@@ -43,4 +43,5 @@ populateParachainConfigs()
       ),
     ),
   )
+  .then(() => process.exit())
   .catch(console.error);

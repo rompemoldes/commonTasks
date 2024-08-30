@@ -84,7 +84,7 @@ export async function getSnowEnvBasedOnRelayChain(
     );
   }
 
-  console.log(
+  console.error(
     `"${parachainName}" relays on a blockchain that is not part of the Snowbridge API.`,
   );
 

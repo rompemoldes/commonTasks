@@ -121,7 +121,7 @@ export async function buildParachainConfig(
         skipExistentialDepositCheck: false,
         addressType: addressType,
         decimals: tokenDecimal,
-        maxConsumers: 16,
+        maxConsumers: 16, // Could not find a way to fetch this
       },
       erc20tokensReceivable: [
         {

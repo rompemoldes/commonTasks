@@ -12,6 +12,9 @@ import { ApiPromise, HttpProvider, WsProvider } from '@polkadot/api';
 export async function getSubstApi(
   wsUrl: string,
 ): Promise<ApiPromise | undefined> {
+  if (wsUrl === 'https://rococo-rpc.polkadot.io') {
+    wsUrl = 'wss://rococo-rpc.polkadot.io';
+  }
   const provider = wsUrl.startsWith('http')
     ? new HttpProvider(wsUrl)
     : new WsProvider(wsUrl);

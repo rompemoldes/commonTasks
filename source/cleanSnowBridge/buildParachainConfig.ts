@@ -57,6 +57,11 @@ export async function buildParachainConfig(
   //debugger:
   console.log('snowBridgeEnvName: ', snowBridgeEnvName);
 
+  if (snowBridgeEnvName === 'unsupported_relaychain') {
+    // error message already logged from getSnowEnvBasedOnRelayChain()
+    return;
+  }
+
   /** The Snowbridge team decided to set the amount of the existential deposit as the minimal transfer amount. */
   const minimumTransferAmount = BigInt(
     paraApi.consts.balances.existentialDeposit.toString(),

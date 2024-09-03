@@ -5,9 +5,9 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@kiltprotocol/sdk-js": "^0.35.0",
-    "@polkadot/util": "latest",
-    "@polkadot/util-crypto": "latest",
+    "@kiltprotocol/sdk-js": "^0.35.2",
+    "@polkadot/util": "^12.4.2",
+    "@polkadot/util-crypto": "^12.4.2",
     "dotenv": "^16.3.1",
     "random-word": "^2.0.0",
     "tslib": "^2.6.2"

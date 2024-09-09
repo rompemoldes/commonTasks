@@ -17,10 +17,10 @@ tryIt().then(() => process.exit());
 
 async function tryThis() {
   const api = await getApi();
-  const keys = generateKeyPairs(DID_MNEMONIC);
+  const keys = generateKeyPairs(DID_MNEMONIC!);
 
-  const payer = generateAccount(ACCOUNT_MNEMONIC);
-  const didDocument = await generateFullDid(payer, DID_MNEMONIC);
+  const payer = generateAccount(ACCOUNT_MNEMONIC!);
+  const didDocument = await generateFullDid(payer, DID_MNEMONIC!);
 
   console.log('The DID: ', didDocument);
 
@@ -56,8 +56,8 @@ async function tryThat() {
 async function tryIt() {
   const api = await getApi();
 
-  const payer = generateAccount(ACCOUNT_MNEMONIC);
-  const didDocument = await generateFullDid(payer, DID_MNEMONIC);
+  const payer = generateAccount(ACCOUNT_MNEMONIC!);
+  const didDocument = await generateFullDid(payer, DID_MNEMONIC!);
 
   console.log('The original DID-URI: ', didDocument.uri);
 

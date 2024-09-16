@@ -13,7 +13,8 @@ import { generateKeyPairs } from './generators/generateKeyPairs';
 
 // tryThis().then(() => process.exit());
 // tryThat().then(() => process.exit());
-tryIt().then(() => process.exit());
+// tryIt().then(() => process.exit());
+tryItOut().then(() => process.exit());
 
 async function tryThis() {
   const api = await getApi();
@@ -71,4 +72,13 @@ async function tryIt() {
   console.log('working on this blockchain: ', chainName);
 
   api.disconnect();
+}
+
+async function tryItOut() {
+  const title = '';
+  const display = title || '∅';
+
+  console.log('title: ', title);
+  console.log('display: ', display);
+  console.log('Boolean title: ', Boolean(title));
 }

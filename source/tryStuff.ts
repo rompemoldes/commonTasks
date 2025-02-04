@@ -81,4 +81,11 @@ async function tryItOut() {
   console.log('title: ', title);
   console.log('display: ', display);
   console.log('Boolean title: ', Boolean(title));
+  const longest = Number.MAX_VALUE;
+  console.log('longest: ', longest);
+  console.log('longest number of bits: ', Math.log2(longest));
+
+  const longest_save = Number.MAX_SAFE_INTEGER;
+  console.log('longest_save: ', longest_save);
+  console.log('longest_save number of bits: ', Math.log2(longest_save));
 }
